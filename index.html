@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Одно важное приглашение…</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;700&family=Marck+Script&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg1:#ffe3ec;
+    --bg2:#ffd1e3;
+    --bg3:#fbc7ea;
+    --accent:#ff5c8a;
+    --accent-dark:#e63e73;
+    --soft:#fff5f9;
+    --text:#5a2a43;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+
+  html,body{height:100%;}
+
+  body{
+    font-family:'Comfortaa',cursive,sans-serif;
+    color:var(--text);
+    background:linear-gradient(-45deg,var(--bg1),var(--bg2),var(--bg3),#ffe0f0);
+    background-size:400% 400%;
+    animation:bgshift 16s ease infinite;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    position:relative;
+    padding:20px;
+  }
+
+  @keyframes bgshift{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+  }
+
+  /* ---- floating hearts background ---- */
+  .hearts{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0;}
+  .hearts span{
+    position:absolute;
+    bottom:-40px;
+    font-size:22px;
+    opacity:.7;
+    animation:rise linear infinite;
+  }
+  @keyframes rise{
+    0%{transform:translateY(0) rotate(0deg) scale(1);opacity:0;}
+    10%{opacity:.8;}
+    90%{opacity:.6;}
+    100%{transform:translateY(-115vh) rotate(360deg) scale(1.3);opacity:0;}
+  }
+
+  /* ---- card ---- */
+  .stage{
+    position:relative;
+    z-index:2;
+    width:100%;
+    max-width:520px;
+  }
+
+  .card{
+    background:rgba(255,255,255,.72);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    border-radius:32px;
+    padding:42px 32px 46px;
+    box-shadow:0 20px 60px rgba(230,62,115,.28), inset 0 0 0 1px rgba(255,255,255,.6);
+    text-align:center;
+    animation:pop .6s cubic-bezier(.18,.9,.35,1.4) both;
+  }
+
+  @keyframes pop{
+    0%{transform:scale(.8) translateY(20px);opacity:0;}
+    100%{transform:scale(1) translateY(0);opacity:1;}
+  }
+
+  .screen{display:none;}
+  .screen.active{display:block;animation:fade .5s ease both;}
+  @keyframes fade{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+
+  .emoji{font-size:60px;display:block;margin-bottom:12px;animation:beat 1.3s ease-in-out infinite;}
+  @keyframes beat{0%,100%{transform:scale(1);}25%{transform:scale(1.15);}40%{transform:scale(1);}}
+
+  h1{
+    font-family:'Marck Script',cursive;
+    font-size:clamp(30px,7vw,44px);
+    line-height:1.15;
+    color:var(--accent-dark);
+    margin-bottom:10px;
+    font-weight:400;
+  }
+
+  .sub{font-size:15px;opacity:.8;margin-bottom:26px;line-height:1.5;}
+
+  /* ---- buttons ---- */
+  .btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative;min-height:60px;align-items:center;}
+
+  button{
+    font-family:'Comfortaa',sans-serif;
+    font-weight:700;
+    border:none;
+    cursor:pointer;
+    border-radius:50px;
+    padding:15px 34px;
+    font-size:17px;
+    transition:transform .18s ease, box-shadow .18s ease, background .2s;
+    color:#fff;
+  }
+
+  .yes{
+    background:linear-gradient(135deg,#ff6a99,#ff3d76);
+    box-shadow:0 8px 20px rgba(255,61,118,.45);
+  }
+  .yes:hover{transform:translateY(-3px) scale(1.05);box-shadow:0 12px 26px rgba(255,61,118,.55);}
+  .yes:active{transform:scale(.96);}
+
+  .no{
+    background:linear-gradient(135deg,#c9b6c4,#a98ba0);
+    box-shadow:0 6px 16px rgba(120,90,110,.3);
+    position:relative;
+  }
+  .no:hover{transform:scale(.95);}
+
+  /* choice grid */
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px;}
+  .choice{
+    background:var(--soft);
+    color:var(--text);
+    border-radius:18px;
+    padding:16px 12px;
+    font-size:14px;
+    font-weight:500;
+    box-shadow:0 4px 12px rgba(230,62,115,.12), inset 0 0 0 1px rgba(255,180,205,.5);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:6px;
+    transition:transform .15s, box-shadow .15s, background .15s;
+  }
+  .choice .ic{font-size:26px;}
+  .choice:hover{transform:translateY(-4px);background:#fff;box-shadow:0 10px 22px rgba(230,62,115,.22);}
+  .choice:active{transform:scale(.95);}
+  .choice.selected{background:linear-gradient(135deg,#ff6a99,#ff3d76);color:#fff;box-shadow:0 8px 20px rgba(255,61,118,.4);}
+
+  .progress{display:flex;gap:8px;justify-content:center;margin-bottom:22px;}
+  .dot{width:9px;height:9px;border-radius:50%;background:rgba(230,62,115,.25);transition:.3s;}
+  .dot.on{background:var(--accent);transform:scale(1.3);}
+
+  .next-btn{margin-top:22px;}
+  .next-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+
+  .summary{
+    background:var(--soft);
+    border-radius:20px;
+    padding:18px 20px;
+    margin:6px 0 8px;
+    text-align:left;
+    font-size:15px;
+    line-height:1.9;
+    box-shadow:inset 0 0 0 1px rgba(255,180,205,.5);
+  }
+  .summary b{color:var(--accent-dark);}
+
+  .whisper{font-size:13px;opacity:.7;margin-top:16px;}
+
+  .fine{margin-top:14px;font-size:12px;opacity:.55;}
+
+  /* confetti burst */
+  .burst{position:fixed;inset:0;pointer-events:none;z-index:5;}
+</style>
+</head>
+<body>
+
+<div class="hearts" id="hearts"></div>
+
+<div class="stage">
+  <div class="card">
+
+    <!-- SCREEN 1: приглашение -->
+    <section class="screen active" id="s1">
+      <span class="emoji">💌</span>
+      <h1>Пойдёшь со мной<br>на свидание?</h1>
+      <p class="sub">Только честно… у меня уже бабочки в животе 🦋</p>
+      <div class="btns" id="askBtns">
+        <button class="yes" id="yesBtn">Да 💕</button>
+        <button class="no" id="noBtn">Нет</button>
+      </div>
+      <p class="whisper" id="noMsg"></p>
+    </section>
+
+    <!-- SCREEN 2: кухня -->
+    <section class="screen" id="s2">
+      <div class="progress"><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div>
+      <span class="emoji">🍽️</span>
+      <h1>Что желаете отведать,<br>мадам?</h1>
+      <p class="sub">Блюдо какой страны сегодня по вкусу?</p>
+      <div class="grid" id="cuisineGrid"></div>
+      <button class="yes next-btn" id="cuisineNext" disabled>Дальше →</button>
+    </section>
+
+    <!-- SCREEN 3: атмосфера -->
+    <section class="screen" id="s3">
+      <div class="progress"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div>
+      <span class="emoji">🌙</span>
+      <h1>А какое настроение<br>у нашего вечера?</h1>
+      <p class="sub">Выбери атмосферу — я всё устрою ✨</p>
+      <div class="grid" id="vibeGrid"></div>
+      <button class="yes next-btn" id="vibeNext" disabled>Дальше →</button>
+    </section>
+
+    <!-- SCREEN 4: время -->
+    <section class="screen" id="s4">
+      <div class="progress"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span></div>
+      <span class="emoji">⏰</span>
+      <h1>И когда встречаемся?</h1>
+      <p class="sub">Назначь дату нашей истории 💖</p>
+      <div class="grid" id="timeGrid"></div>
+      <button class="yes next-btn" id="timeNext" disabled>Готово ✓</button>
+    </section>
+
+    <!-- SCREEN 5: финал -->
+    <section class="screen" id="s5">
+      <span class="emoji">💞</span>
+      <h1>Это свидание!</h1>
+      <p class="sub">Спасибо, что сказала «да». Вот наш план:</p>
+      <div class="summary" id="summary"></div>
+      <p class="whisper">Осталось только дождаться этого вечера… 🥰<br>Я уже считаю часы.</p>
+      <button class="yes next-btn" id="restart">Пройти заново 🔁</button>
+    </section>
+
+  </div>
+</div>
+
+<div class="burst" id="burst"></div>
+
+<script>
+/* ---------- floating hearts ---------- */
+(function(){
+  const box=document.getElementById('hearts');
+  const set=['💕','💗','🌸','💓','✨','🩷','💖'];
+  for(let i=0;i<24;i++){
+    const s=document.createElement('span');
+    s.textContent=set[Math.floor(Math.random()*set.length)];
+    s.style.left=Math.random()*100+'vw';
+    s.style.fontSize=(14+Math.random()*24)+'px';
+    s.style.animationDuration=(7+Math.random()*10)+'s';
+    s.style.animationDelay=(-Math.random()*15)+'s';
+    box.appendChild(s);
+  }
+})();
+
+/* ---------- data ---------- */
+const answers={cuisine:null,vibe:null,time:null};
+
+const cuisines=[
+  {ic:'🍣',name:'Азиатская',note:'Япония · Китай · Корея'},
+  {ic:'🥐',name:'Европейская',note:'Франция · Италия'},
+  {ic:'🍔',name:'Американская',note:'бургеры и уют'},
+  {ic:'🫒',name:'Средиземноморская',note:'Греция · Испания'},
+  {ic:'🌮',name:'Латиноамериканская',note:'остро и ярко'},
+  {ic:'🧆',name:'Ближневосточная',note:'специи и тепло'},
+  {ic:'🍢',name:'Кавказская',note:'хачапури и вино'},
+  {ic:'🥟',name:'Русская',note:'по-домашнему'},
+  {ic:'🐟',name:'Скандинавская',note:'свежесть севера'},
+];
+
+const vibes=[
+  {ic:'🕯️',name:'Уютно и тихо',note:'свечи и разговоры'},
+  {ic:'🎢',name:'Весело и активно',note:'приключения вдвоём'},
+  {ic:'🎨',name:'Творчески',note:'искусство и вдохновение'},
+  {ic:'🌃',name:'Ночной город',note:'огни и прогулки'},
+];
+
+const times=[
+  {ic:'☕',name:'Утро',note:'кофе и рассвет'},
+  {ic:'☀️',name:'День',note:'солнечно и легко'},
+  {ic:'🌆',name:'Вечер',note:'закат для двоих'},
+  {ic:'🌙',name:'Ночь',note:'звёзды и тишина'},
+];
+
+/* ---------- screen switching ---------- */
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+/* ---------- SCREEN 1: "нет" сценарий ---------- */
+const noMessages=[
+  'Ну не может быть 🥺 попробуй ещё раз',
+  'Не верю! Точно нет? 😳',
+  'Хм… кнопка какая-то капризная 😌',
+  'Она всё меньше и меньше… 👀',
+  'Ладно, я сделаю вид что это опечатка 💁',
+];
+let noCount=0;
+const noBtn=document.getElementById('noBtn');
+const yesBtn=document.getElementById('yesBtn');
+const noMsg=document.getElementById('noMsg');
+
+function moveNo(){
+  // прыгает в случайное место относительно контейнера
+  const btns=document.getElementById('askBtns');
+  const maxX=Math.min(120, btns.clientWidth/3);
+  const x=(Math.random()*2-1)*maxX;
+  const y=(Math.random()*2-1)*40;
+  noBtn.style.transition='transform .25s ease';
+  noBtn.style.transform=`translate(${x}px,${y}px) scale(${Math.max(.5,1-noCount*0.12)})`;
+}
+
+noBtn.addEventListener('mouseenter',()=>{ if(noCount>0) moveNo(); });
+
+noBtn.addEventListener('click',()=>{
+  noCount++;
+  noMsg.textContent=noMessages[Math.min(noCount-1,noMessages.length-1)];
+  // растим "Да"
+  yesBtn.style.transition='transform .25s ease';
+  yesBtn.style.transform=`scale(${1+noCount*0.14})`;
+  moveNo();
+
+  if(noCount>=5){
+    // всё равно это "да"
+    noBtn.textContent='...ну ладно, ДА 💗';
+    noBtn.classList.remove('no');
+    noBtn.classList.add('yes');
+    noBtn.style.transform='none';
+    noMsg.textContent='Я знала, что ты согласишься 😌💞';
+    noBtn.onclick=goYes;
+  }
+});
+
+yesBtn.addEventListener('click',goYes);
+
+function goYes(){
+  confetti();
+  buildGrids();
+  show('s2');
+}
+
+/* ---------- grids ---------- */
+function makeGrid(el,items,key,nextBtn){
+  el.innerHTML='';
+  items.forEach(it=>{
+    const d=document.createElement('div');
+    d.className='choice';
+    d.innerHTML=`<span class="ic">${it.ic}</span><span>${it.name}</span><span style="font-size:11px;opacity:.65">${it.note}</span>`;
+    d.addEventListener('click',()=>{
+      el.querySelectorAll('.choice').forEach(c=>c.classList.remove('selected'));
+      d.classList.add('selected');
+      answers[key]=it;
+      nextBtn.disabled=false;
+    });
+    el.appendChild(d);
+  });
+}
+
+let gridsBuilt=false;
+function buildGrids(){
+  if(gridsBuilt)return; gridsBuilt=true;
+  makeGrid(document.getElementById('cuisineGrid'),cuisines,'cuisine',document.getElementById('cuisineNext'));
+  makeGrid(document.getElementById('vibeGrid'),vibes,'vibe',document.getElementById('vibeNext'));
+  makeGrid(document.getElementById('timeGrid'),times,'time',document.getElementById('timeNext'));
+}
+
+document.getElementById('cuisineNext').addEventListener('click',()=>show('s3'));
+document.getElementById('vibeNext').addEventListener('click',()=>show('s4'));
+document.getElementById('timeNext').addEventListener('click',()=>{ finalize(); confetti(); show('s5'); });
+
+/* ---------- final ---------- */
+function finalize(){
+  const s=document.getElementById('summary');
+  s.innerHTML=`
+    🍽️ Кухня: <b>${answers.cuisine.name}</b> <span style="opacity:.6">(${answers.cuisine.note})</span><br>
+    ${answers.vibe.ic} Атмосфера: <b>${answers.vibe.name}</b><br>
+    ${answers.time.ic} Время: <b>${answers.time.name}</b>
+  `;
+}
+
+document.getElementById('restart').addEventListener('click',()=>{
+  noCount=0; noMsg.textContent='';
+  noBtn.textContent='Нет'; noBtn.className='no'; noBtn.style.transform='none'; noBtn.onclick=null;
+  noBtn.addEventListener('click',()=>{}); // no-op safety
+  yesBtn.style.transform='none';
+  answers.cuisine=answers.vibe=answers.time=null;
+  document.querySelectorAll('.choice').forEach(c=>c.classList.remove('selected'));
+  ['cuisineNext','vibeNext','timeNext'].forEach(id=>document.getElementById(id).disabled=true);
+  location.reload();
+});
+
+/* ---------- confetti ---------- */
+function confetti(){
+  const box=document.getElementById('burst');
+  const em=['💕','💖','✨','🌸','💗','🎉','🩷'];
+  for(let i=0;i<40;i++){
+    const p=document.createElement('span');
+    p.textContent=em[Math.floor(Math.random()*em.length)];
+    p.style.position='absolute';
+    p.style.left='50%';
+    p.style.top='45%';
+    p.style.fontSize=(16+Math.random()*20)+'px';
+    p.style.pointerEvents='none';
+    box.appendChild(p);
+    const ang=Math.random()*Math.PI*2;
+    const dist=120+Math.random()*260;
+    const dx=Math.cos(ang)*dist;
+    const dy=Math.sin(ang)*dist - 120;
+    p.animate([
+      {transform:'translate(-50%,-50%) scale(.4)',opacity:1},
+      {transform:`translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px)) rotate(${Math.random()*720-360}deg) scale(1.2)`,opacity:0}
+    ],{duration:1100+Math.random()*700,easing:'cubic-bezier(.2,.6,.3,1)'});
+    setTimeout(()=>p.remove(),1900);
+  }
+}
+</script>
+</body>
+</html>
