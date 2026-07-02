@@ -233,7 +233,7 @@
       <h1>Это свидание!</h1>
       <p class="sub">Спасибо, что сказала «да». Вот наш план:</p>
       <div class="summary" id="summary"></div>
-      <p class="whisper">Осталось только дождаться этого вечера… 🥰<br>Я уже считаю часы.</p>
+      <p class="whisper" id="finalWhisper">Осталось только дождаться этого вечера… 🥰<br>Я уже считаю часы.</p>
       <button class="yes next-btn" id="restart">Пройти заново 🔁</button>
     </section>
 
@@ -281,10 +281,10 @@ const vibes=[
 ];
 
 const times=[
-  {ic:'☕',name:'Утро',note:'кофе и рассвет'},
-  {ic:'☀️',name:'День',note:'солнечно и легко'},
-  {ic:'🌆',name:'Вечер',note:'закат для двоих'},
-  {ic:'🌙',name:'Ночь',note:'звёзды и тишина'},
+  {ic:'☕',name:'Утро',note:'кофе и рассвет',wait:'этого утра'},
+  {ic:'☀️',name:'День',note:'солнечно и легко',wait:'этого дня'},
+  {ic:'🌆',name:'Вечер',note:'закат для двоих',wait:'этого вечера'},
+  {ic:'🌙',name:'Ночь',note:'звёзды и тишина',wait:'этой ночи'},
 ];
 
 /* ---------- screen switching ---------- */
@@ -382,6 +382,8 @@ function finalize(){
     ${answers.vibe.ic} Атмосфера: <b>${answers.vibe.name}</b><br>
     ${answers.time.ic} Время: <b>${answers.time.name}</b>
   `;
+  document.getElementById('finalWhisper').innerHTML=
+    `Осталось только дождаться ${answers.time.wait}… 🥰<br>Я уже считаю часы.`;
 }
 
 document.getElementById('restart').addEventListener('click',()=>{
