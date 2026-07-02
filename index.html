@@ -19,7 +19,6 @@
   }
 
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-
   html,body{height:100%;}
 
   body{
@@ -60,24 +59,18 @@
   }
 
   /* ---- card ---- */
-  .stage{
-    position:relative;
-    z-index:2;
-    width:100%;
-    max-width:520px;
-  }
+  .stage{position:relative;z-index:2;width:100%;max-width:540px;}
 
   .card{
     background:rgba(255,255,255,.72);
     backdrop-filter:blur(14px);
     -webkit-backdrop-filter:blur(14px);
     border-radius:32px;
-    padding:42px 32px 46px;
+    padding:40px 30px 44px;
     box-shadow:0 20px 60px rgba(230,62,115,.28), inset 0 0 0 1px rgba(255,255,255,.6);
     text-align:center;
     animation:pop .6s cubic-bezier(.18,.9,.35,1.4) both;
   }
-
   @keyframes pop{
     0%{transform:scale(.8) translateY(20px);opacity:0;}
     100%{transform:scale(1) translateY(0);opacity:1;}
@@ -87,19 +80,19 @@
   .screen.active{display:block;animation:fade .5s ease both;}
   @keyframes fade{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
 
-  .emoji{font-size:60px;display:block;margin-bottom:12px;animation:beat 1.3s ease-in-out infinite;}
+  .emoji{font-size:58px;display:block;margin-bottom:12px;animation:beat 1.3s ease-in-out infinite;}
   @keyframes beat{0%,100%{transform:scale(1);}25%{transform:scale(1.15);}40%{transform:scale(1);}}
 
   h1{
     font-family:'Marck Script',cursive;
-    font-size:clamp(30px,7vw,44px);
+    font-size:clamp(28px,7vw,42px);
     line-height:1.15;
     color:var(--accent-dark);
     margin-bottom:10px;
     font-weight:400;
   }
 
-  .sub{font-size:15px;opacity:.8;margin-bottom:26px;line-height:1.5;}
+  .sub{font-size:15px;opacity:.82;margin-bottom:24px;line-height:1.5;}
 
   /* ---- buttons ---- */
   .btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative;min-height:60px;align-items:center;}
@@ -130,51 +123,119 @@
   }
   .no:hover{transform:scale(.95);}
 
+  .ghost{
+    background:transparent;color:var(--accent-dark);font-weight:500;
+    box-shadow:none;padding:10px 18px;font-size:14px;opacity:.75;
+  }
+  .ghost:hover{opacity:1;transform:none;box-shadow:none;}
+
   /* choice grid */
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px;}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px;}
   .choice{
     background:var(--soft);
     color:var(--text);
     border-radius:18px;
-    padding:16px 12px;
+    padding:15px 12px;
     font-size:14px;
     font-weight:500;
+    cursor:pointer;
     box-shadow:0 4px 12px rgba(230,62,115,.12), inset 0 0 0 1px rgba(255,180,205,.5);
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:6px;
+    display:flex;flex-direction:column;align-items:center;gap:5px;
     transition:transform .15s, box-shadow .15s, background .15s;
   }
   .choice .ic{font-size:26px;}
   .choice:hover{transform:translateY(-4px);background:#fff;box-shadow:0 10px 22px rgba(230,62,115,.22);}
   .choice:active{transform:scale(.95);}
   .choice.selected{background:linear-gradient(135deg,#ff6a99,#ff3d76);color:#fff;box-shadow:0 8px 20px rgba(255,61,118,.4);}
+  .choice.selected .note{color:#fff !important;opacity:.85;}
+  .choice .note{font-size:11px;opacity:.65;}
 
-  .progress{display:flex;gap:8px;justify-content:center;margin-bottom:22px;}
-  .dot{width:9px;height:9px;border-radius:50%;background:rgba(230,62,115,.25);transition:.3s;}
+  /* ---- flip cards (плейлист) ---- */
+  .flipgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:6px;}
+  .flip{perspective:700px;height:92px;cursor:pointer;}
+  .flip-inner{position:relative;width:100%;height:100%;transition:transform .55s cubic-bezier(.2,.8,.3,1.2);transform-style:preserve-3d;}
+  .flip.flipped .flip-inner{transform:rotateY(180deg);}
+  .flip-face{
+    position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+    border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:6px;text-align:center;
+  }
+  .flip-front{
+    background:linear-gradient(135deg,#ffb3d1,#ff8ab5);
+    color:#fff;box-shadow:0 6px 16px rgba(255,90,138,.35);
+  }
+  .flip-front .q{font-size:26px;font-weight:700;}
+  .flip-front .hint{font-size:10px;opacity:.9;margin-top:2px;}
+  .flip-back{
+    transform:rotateY(180deg);
+    background:linear-gradient(135deg,#6a3d8f,#3d2b6b);
+    color:#fff;box-shadow:0 6px 16px rgba(60,40,100,.4);
+  }
+  .flip-back .lz{font-size:13px;font-weight:700;line-height:1.15;}
+  .flip-back .song{font-size:10px;opacity:.85;margin-top:3px;}
+  .flip-back .mic{font-size:18px;margin-bottom:2px;}
+
+  /* progress */
+  .progress{display:flex;gap:7px;justify-content:center;margin-bottom:20px;}
+  .dot{width:8px;height:8px;border-radius:50%;background:rgba(230,62,115,.22);transition:.3s;}
   .dot.on{background:var(--accent);transform:scale(1.3);}
+  .dot.done{background:var(--accent);opacity:.55;}
 
-  .next-btn{margin-top:22px;}
+  .nav{display:flex;justify-content:space-between;align-items:center;margin-top:20px;gap:10px;}
   .next-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
 
-  .summary{
-    background:var(--soft);
-    border-radius:20px;
-    padding:18px 20px;
-    margin:6px 0 8px;
-    text-align:left;
-    font-size:15px;
-    line-height:1.9;
-    box-shadow:inset 0 0 0 1px rgba(255,180,205,.5);
+  .whisper{font-size:13px;opacity:.75;margin-top:16px;line-height:1.5;}
+
+  /* ---------- POSTCARD ---------- */
+  .postcard-wrap{margin-top:4px;}
+  .postcard{
+    position:relative;
+    background:
+      radial-gradient(circle at 15% 12%,rgba(255,255,255,.6),transparent 40%),
+      linear-gradient(160deg,#fff0f6 0%,#ffe0ee 50%,#ffd6ea 100%);
+    border-radius:24px;
+    padding:26px 24px 24px;
+    text-align:center;
+    box-shadow:0 14px 40px rgba(230,62,115,.3), inset 0 0 0 2px rgba(255,255,255,.7);
+    overflow:hidden;
   }
-  .summary b{color:var(--accent-dark);}
+  .postcard::before,.postcard::after{
+    content:"";position:absolute;width:26px;height:26px;border-radius:50%;
+    background:var(--bg1);top:50%;transform:translateY(-50%);
+  }
+  .postcard::before{left:-13px;}
+  .postcard::after{right:-13px;}
+  .pc-tag{
+    font-size:11px;letter-spacing:3px;text-transform:uppercase;
+    color:var(--accent-dark);opacity:.8;font-weight:700;
+  }
+  .pc-hearts{font-size:30px;margin:6px 0 2px;}
+  .pc-title{font-family:'Marck Script',cursive;font-size:38px;color:var(--accent-dark);line-height:1;}
+  .pc-for{font-size:14px;margin-top:6px;opacity:.85;}
+  .pc-for b{color:var(--accent-dark);font-size:17px;}
+  .pc-divider{
+    height:1px;margin:16px 4px;
+    background:repeating-linear-gradient(90deg,rgba(230,62,115,.4) 0 6px,transparent 6px 12px);
+  }
+  .pc-plan{text-align:left;display:flex;flex-direction:column;gap:9px;}
+  .pc-row{display:flex;align-items:center;gap:10px;font-size:14px;}
+  .pc-row .pi{font-size:19px;width:24px;text-align:center;flex:none;}
+  .pc-row .pl{opacity:.7;}
+  .pc-row b{color:var(--accent-dark);}
+  .pc-foot{
+    margin-top:16px;font-family:'Marck Script',cursive;
+    font-size:22px;color:var(--accent-dark);
+  }
+  .pc-date{font-size:11px;opacity:.6;margin-top:2px;}
 
-  .whisper{font-size:13px;opacity:.7;margin-top:16px;}
+  .save-hint{font-size:12px;opacity:.7;margin-top:14px;}
+  .final-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px;}
+  .save-btn{
+    background:#fff;color:var(--accent-dark);font-weight:700;
+    box-shadow:0 6px 16px rgba(230,62,115,.2), inset 0 0 0 1.5px rgba(255,150,190,.6);
+  }
+  .save-btn:hover{transform:translateY(-2px);}
 
-  .fine{margin-top:14px;font-size:12px;opacity:.55;}
-
-  /* confetti burst */
   .burst{position:fixed;inset:0;pointer-events:none;z-index:5;}
 </style>
 </head>
@@ -185,10 +246,18 @@
 <div class="stage">
   <div class="card">
 
-    <!-- SCREEN 1: приглашение -->
-    <section class="screen active" id="s1">
+    <!-- INTRO -->
+    <section class="screen active" id="scr-intro">
+      <span class="emoji">🙈</span>
+      <h1>Привет, Окс…</h1>
+      <p class="sub">У меня к тебе одно очень важное дело.<br>Только пообещай дочитать до конца 🤍</p>
+      <button class="yes" id="openBtn">Открыть 💌</button>
+    </section>
+
+    <!-- INVITE -->
+    <section class="screen" id="scr-invite">
       <span class="emoji">💌</span>
-      <h1>Пойдёшь со мной<br>на свидание?</h1>
+      <h1>Пойдёшь со мной<br>на свидание, Окс?</h1>
       <p class="sub">Только честно… у меня уже бабочки в животе 🦋</p>
       <div class="btns" id="askBtns">
         <button class="yes" id="yesBtn">Да 💕</button>
@@ -197,44 +266,39 @@
       <p class="whisper" id="noMsg"></p>
     </section>
 
-    <!-- SCREEN 2: кухня -->
-    <section class="screen" id="s2">
-      <div class="progress"><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div>
-      <span class="emoji">🍽️</span>
-      <h1>Что желаете отведать,<br>мадам?</h1>
-      <p class="sub">Блюдо какой страны сегодня по вкусу?</p>
-      <div class="grid" id="cuisineGrid"></div>
-      <button class="yes next-btn" id="cuisineNext" disabled>Дальше →</button>
+    <!-- QUESTIONS (динамически) -->
+    <section class="screen" id="scr-quest">
+      <div class="progress" id="progress"></div>
+      <span class="emoji" id="qEmoji">🍽️</span>
+      <h1 id="qTitle"></h1>
+      <p class="sub" id="qSub"></p>
+      <div id="qBody"></div>
+      <div class="nav">
+        <button class="ghost" id="backBtn">← Назад</button>
+        <button class="yes next-btn" id="nextBtn" disabled>Дальше →</button>
+      </div>
     </section>
 
-    <!-- SCREEN 3: атмосфера -->
-    <section class="screen" id="s3">
-      <div class="progress"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div>
-      <span class="emoji">🌙</span>
-      <h1>А какое настроение<br>у нашего вечера?</h1>
-      <p class="sub">Выбери атмосферу — я всё устрою ✨</p>
-      <div class="grid" id="vibeGrid"></div>
-      <button class="yes next-btn" id="vibeNext" disabled>Дальше →</button>
-    </section>
-
-    <!-- SCREEN 4: время -->
-    <section class="screen" id="s4">
-      <div class="progress"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span></div>
-      <span class="emoji">⏰</span>
-      <h1>И когда встречаемся?</h1>
-      <p class="sub">Назначь дату нашей истории 💖</p>
-      <div class="grid" id="timeGrid"></div>
-      <button class="yes next-btn" id="timeNext" disabled>Готово ✓</button>
-    </section>
-
-    <!-- SCREEN 5: финал -->
-    <section class="screen" id="s5">
-      <span class="emoji">💞</span>
-      <h1>Это свидание!</h1>
-      <p class="sub">Спасибо, что сказала «да». Вот наш план:</p>
-      <div class="summary" id="summary"></div>
-      <p class="whisper" id="finalWhisper">Осталось только дождаться этого вечера… 🥰<br>Я уже считаю часы.</p>
-      <button class="yes next-btn" id="restart">Пройти заново 🔁</button>
+    <!-- FINAL -->
+    <section class="screen" id="scr-final">
+      <div class="postcard-wrap">
+        <div class="postcard" id="postcard">
+          <div class="pc-tag">приглашение на свидание</div>
+          <div class="pc-hearts">💞</div>
+          <div class="pc-title">Наш вечер</div>
+          <div class="pc-for">для <b>Окс</b></div>
+          <div class="pc-divider"></div>
+          <div class="pc-plan" id="pcPlan"></div>
+          <div class="pc-divider"></div>
+          <div class="pc-foot">Ты сказала «да» 🤍</div>
+          <div class="pc-date" id="pcDate"></div>
+        </div>
+      </div>
+      <p class="save-hint" id="finalWhisper">📸 Сделай скриншот на память — и до встречи 🥰</p>
+      <div class="final-btns">
+        <button class="save-btn" id="saveBtn">Сохранить картинкой 💾</button>
+        <button class="yes" id="restart">Заново 🔁</button>
+      </div>
     </section>
 
   </div>
@@ -242,7 +306,10 @@
 
 <div class="burst" id="burst"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script>
+const NAME='Окс';
+
 /* ---------- floating hearts ---------- */
 (function(){
   const box=document.getElementById('hearts');
@@ -259,7 +326,7 @@
 })();
 
 /* ---------- data ---------- */
-const answers={cuisine:null,vibe:null,time:null};
+const answers={};
 
 const cuisines=[
   {ic:'🍣',name:'Азиатская',note:'Япония · Китай · Корея'},
@@ -273,11 +340,36 @@ const cuisines=[
   {ic:'🐟',name:'Скандинавская',note:'свежесть севера'},
 ];
 
+const drinks=[
+  {ic:'☕',name:'Кофе',note:'бодрит и греет'},
+  {ic:'🍷',name:'Вино',note:'по бокальчику'},
+  {ic:'🧋',name:'Бабл-ти',note:'сладко и весело'},
+  {ic:'🍸',name:'Коктейль',note:'что-то яркое'},
+  {ic:'🫖',name:'Чай',note:'уютно и неспешно'},
+  {ic:'🍾',name:'Шампанское',note:'за нас с тобой'},
+];
+
 const vibes=[
   {ic:'🕯️',name:'Уютно и тихо',note:'свечи и разговоры'},
   {ic:'🎢',name:'Весело и активно',note:'приключения вдвоём'},
   {ic:'🎨',name:'Творчески',note:'искусство и вдохновение'},
   {ic:'🌃',name:'Ночной город',note:'огни и прогулки'},
+];
+
+const activities=[
+  {ic:'🎬',name:'Кино',note:'обнимашки в темноте'},
+  {ic:'🚶',name:'Прогулка',note:'гулять до утра'},
+  {ic:'⛸️',name:'Каток',note:'держаться за руки'},
+  {ic:'🖼️',name:'Выставка',note:'искусство и ты'},
+  {ic:'🎳',name:'Боулинг',note:'азарт и смех'},
+  {ic:'💬',name:'Просто болтать',note:'обо всём на свете'},
+];
+
+const dresses=[
+  {ic:'🧥',name:'Уютно',note:'свитер и плед-настроение'},
+  {ic:'👗',name:'Нарядно',note:'при полном параде'},
+  {ic:'🕶️',name:'Casual',note:'стильно и легко'},
+  {ic:'😎',name:'Как есть',note:'ты и так огонь'},
 ];
 
 const times=[
@@ -287,19 +379,38 @@ const times=[
   {ic:'🌙',name:'Ночь',note:'звёзды и тишина',wait:'этой ночи'},
 ];
 
-/* ---------- screen switching ---------- */
+/* плейлист — что ни карта, то Лазарев 😏 */
+const lazarev=[
+  'Шёпотом','Так красиво','В самое сердце','Я не боюсь',
+  'Сдавайся','Лови','You Are the Only One','Scream','7 цифр',
+];
+
+/* порядок вопросов */
+const steps=[
+  {key:'cuisine', emoji:'🍽️', title:'Что желаете отведать,<br>мадам?', sub:'Блюдо какой страны сегодня по вкусу?', type:'grid', options:cuisines},
+  {key:'drink',   emoji:'🥂', title:'А что будем пить?', sub:'Выбери напиток нашего вечера', type:'grid', options:drinks},
+  {key:'vibe',    emoji:'🌙', title:'Какое настроение<br>у вечера?', sub:'Выбери атмосферу — я всё устрою ✨', type:'grid', options:vibes},
+  {key:'activity',emoji:'🎬', title:'Чем займёмся?', sub:'Как проведём время вместе?', type:'grid', options:activities},
+  {key:'dress',   emoji:'👗', title:'Дресс-код вечера?', sub:'(на самом деле ты прекрасна в любом 🥰)', type:'grid', options:dresses},
+  {key:'playlist',emoji:'🎵', title:'Выбери музыку вечера', sub:'Переверни карточку — вдруг там сюрприз 😏', type:'flip', options:lazarev},
+  {key:'time',    emoji:'⏰', title:'И когда встречаемся?', sub:'Назначь дату нашей истории 💖', type:'grid', options:times},
+];
+
+/* ---------- screens ---------- */
 function show(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
 
-/* ---------- SCREEN 1: "нет" сценарий ---------- */
+document.getElementById('openBtn').addEventListener('click',()=>show('scr-invite'));
+
+/* ---------- INVITE: сценарий "нет" ---------- */
 const noMessages=[
   'Ну не может быть 🥺 попробуй ещё раз',
   'Не верю! Точно нет? 😳',
   'Хм… кнопка какая-то капризная 😌',
   'Она всё меньше и меньше… 👀',
-  'Ладно, я сделаю вид что это опечатка 💁',
+  'Ладно, Окс, я сделаю вид что это опечатка 💁',
 ];
 let noCount=0;
 const noBtn=document.getElementById('noBtn');
@@ -307,7 +418,6 @@ const yesBtn=document.getElementById('yesBtn');
 const noMsg=document.getElementById('noMsg');
 
 function moveNo(){
-  // прыгает в случайное место относительно контейнера
   const btns=document.getElementById('askBtns');
   const maxX=Math.min(120, btns.clientWidth/3);
   const x=(Math.random()*2-1)*maxX;
@@ -315,19 +425,14 @@ function moveNo(){
   noBtn.style.transition='transform .25s ease';
   noBtn.style.transform=`translate(${x}px,${y}px) scale(${Math.max(.5,1-noCount*0.12)})`;
 }
-
 noBtn.addEventListener('mouseenter',()=>{ if(noCount>0) moveNo(); });
-
 noBtn.addEventListener('click',()=>{
   noCount++;
   noMsg.textContent=noMessages[Math.min(noCount-1,noMessages.length-1)];
-  // растим "Да"
   yesBtn.style.transition='transform .25s ease';
   yesBtn.style.transform=`scale(${1+noCount*0.14})`;
   moveNo();
-
   if(noCount>=5){
-    // всё равно это "да"
     noBtn.textContent='...ну ладно, ДА 💗';
     noBtn.classList.remove('no');
     noBtn.classList.add('yes');
@@ -336,66 +441,130 @@ noBtn.addEventListener('click',()=>{
     noBtn.onclick=goYes;
   }
 });
-
 yesBtn.addEventListener('click',goYes);
+function goYes(){ confetti(); stepIndex=0; renderStep(); show('scr-quest'); }
 
-function goYes(){
-  confetti();
-  buildGrids();
-  show('s2');
-}
+/* ---------- QUESTIONS engine ---------- */
+let stepIndex=0;
+const progress=document.getElementById('progress');
+const qEmoji=document.getElementById('qEmoji');
+const qTitle=document.getElementById('qTitle');
+const qSub=document.getElementById('qSub');
+const qBody=document.getElementById('qBody');
+const nextBtn=document.getElementById('nextBtn');
+const backBtn=document.getElementById('backBtn');
 
-/* ---------- grids ---------- */
-function makeGrid(el,items,key,nextBtn){
-  el.innerHTML='';
-  items.forEach(it=>{
-    const d=document.createElement('div');
-    d.className='choice';
-    d.innerHTML=`<span class="ic">${it.ic}</span><span>${it.name}</span><span style="font-size:11px;opacity:.65">${it.note}</span>`;
-    d.addEventListener('click',()=>{
-      el.querySelectorAll('.choice').forEach(c=>c.classList.remove('selected'));
-      d.classList.add('selected');
-      answers[key]=it;
-      nextBtn.disabled=false;
-    });
-    el.appendChild(d);
+function renderProgress(){
+  progress.innerHTML='';
+  steps.forEach((_,i)=>{
+    const d=document.createElement('span');
+    d.className='dot'+(i===stepIndex?' on':(i<stepIndex?' done':''));
+    progress.appendChild(d);
   });
 }
 
-let gridsBuilt=false;
-function buildGrids(){
-  if(gridsBuilt)return; gridsBuilt=true;
-  makeGrid(document.getElementById('cuisineGrid'),cuisines,'cuisine',document.getElementById('cuisineNext'));
-  makeGrid(document.getElementById('vibeGrid'),vibes,'vibe',document.getElementById('vibeNext'));
-  makeGrid(document.getElementById('timeGrid'),times,'time',document.getElementById('timeNext'));
+function renderStep(){
+  const step=steps[stepIndex];
+  renderProgress();
+  qEmoji.textContent=step.emoji;
+  qTitle.innerHTML=step.title;
+  qSub.innerHTML=step.sub;
+  qBody.innerHTML='';
+  nextBtn.disabled=!answers[step.key];
+  nextBtn.textContent = stepIndex===steps.length-1 ? 'Готово ✓' : 'Дальше →';
+
+  const scr=document.getElementById('scr-quest');
+  scr.classList.remove('active');void scr.offsetWidth;scr.classList.add('active');
+
+  if(step.type==='grid') buildGrid(step);
+  else if(step.type==='flip') buildFlip(step);
 }
 
-document.getElementById('cuisineNext').addEventListener('click',()=>show('s3'));
-document.getElementById('vibeNext').addEventListener('click',()=>show('s4'));
-document.getElementById('timeNext').addEventListener('click',()=>{ finalize(); confetti(); show('s5'); });
-
-/* ---------- final ---------- */
-function finalize(){
-  const s=document.getElementById('summary');
-  s.innerHTML=`
-    🍽️ Кухня: <b>${answers.cuisine.name}</b> <span style="opacity:.6">(${answers.cuisine.note})</span><br>
-    ${answers.vibe.ic} Атмосфера: <b>${answers.vibe.name}</b><br>
-    ${answers.time.ic} Время: <b>${answers.time.name}</b>
-  `;
-  document.getElementById('finalWhisper').innerHTML=
-    `Осталось только дождаться ${answers.time.wait}… 🥰<br>Я уже считаю часы.`;
+function buildGrid(step){
+  const grid=document.createElement('div');
+  grid.className='grid';
+  step.options.forEach(it=>{
+    const d=document.createElement('div');
+    d.className='choice'+(answers[step.key]&&answers[step.key].name===it.name?' selected':'');
+    d.innerHTML=`<span class="ic">${it.ic}</span><span>${it.name}</span><span class="note">${it.note}</span>`;
+    d.addEventListener('click',()=>{
+      grid.querySelectorAll('.choice').forEach(c=>c.classList.remove('selected'));
+      d.classList.add('selected');
+      answers[step.key]=it;
+      nextBtn.disabled=false;
+    });
+    grid.appendChild(d);
+  });
+  qBody.appendChild(grid);
 }
 
-document.getElementById('restart').addEventListener('click',()=>{
-  noCount=0; noMsg.textContent='';
-  noBtn.textContent='Нет'; noBtn.className='no'; noBtn.style.transform='none'; noBtn.onclick=null;
-  noBtn.addEventListener('click',()=>{}); // no-op safety
-  yesBtn.style.transform='none';
-  answers.cuisine=answers.vibe=answers.time=null;
-  document.querySelectorAll('.choice').forEach(c=>c.classList.remove('selected'));
-  ['cuisineNext','vibeNext','timeNext'].forEach(id=>document.getElementById(id).disabled=true);
-  location.reload();
+function buildFlip(step){
+  const grid=document.createElement('div');
+  grid.className='flipgrid';
+  step.options.forEach(song=>{
+    const card=document.createElement('div');
+    card.className='flip';
+    card.innerHTML=`
+      <div class="flip-inner">
+        <div class="flip-face flip-front"><span class="q">?</span><span class="hint">нажми</span></div>
+        <div class="flip-face flip-back"><span class="mic">🎤</span><span class="lz">Сергей<br>Лазарев</span><span class="song">«${song}»</span></div>
+      </div>`;
+    card.addEventListener('click',()=>{
+      card.classList.toggle('flipped');
+      if(card.classList.contains('flipped')){
+        answers.playlist={name:'Сергей Лазарев', ic:'🎤', note:'а кто же ещё 😏'};
+        nextBtn.disabled=false;
+      }
+    });
+    grid.appendChild(card);
+  });
+  qBody.appendChild(grid);
+}
+
+nextBtn.addEventListener('click',()=>{
+  if(stepIndex<steps.length-1){ stepIndex++; renderStep(); }
+  else { finalize(); confetti(); show('scr-final'); }
 });
+backBtn.addEventListener('click',()=>{
+  if(stepIndex===0){ show('scr-invite'); }
+  else { stepIndex--; renderStep(); }
+});
+
+/* ---------- FINAL postcard ---------- */
+function finalize(){
+  const rows=[
+    {pi:answers.cuisine.ic, label:'Кухня', val:answers.cuisine.name, note:answers.cuisine.note},
+    {pi:answers.drink.ic, label:'Напиток', val:answers.drink.name},
+    {pi:answers.vibe.ic, label:'Атмосфера', val:answers.vibe.name},
+    {pi:answers.activity.ic, label:'Занятие', val:answers.activity.name},
+    {pi:answers.dress.ic, label:'Образ', val:answers.dress.name},
+    {pi:'🎤', label:'Музыка', val:'Сергей Лазарев', note:'а кто же ещё 😏'},
+    {pi:answers.time.ic, label:'Время', val:answers.time.name},
+  ];
+  document.getElementById('pcPlan').innerHTML=rows.map(r=>
+    `<div class="pc-row"><span class="pi">${r.pi}</span><span class="pl">${r.label}:</span> <b>${r.val}</b>${r.note?` <span class="pl">(${r.note})</span>`:''}</div>`
+  ).join('');
+
+  const d=new Date();
+  document.getElementById('pcDate').textContent='создано с любовью · '+d.toLocaleDateString('ru-RU');
+
+  document.getElementById('finalWhisper').innerHTML=
+    `Осталось только дождаться ${answers.time.wait}… 🥰<br>📸 Сохрани открытку на память`;
+}
+
+/* сохранить открытку картинкой */
+document.getElementById('saveBtn').addEventListener('click',()=>{
+  const pc=document.getElementById('postcard');
+  if(typeof html2canvas!=='function'){ alert('Не вышло сохранить — просто сделай скриншот 📸'); return; }
+  html2canvas(pc,{scale:2,backgroundColor:'#ffe3ec',useCORS:true}).then(canvas=>{
+    const a=document.createElement('a');
+    a.href=canvas.toDataURL('image/png');
+    a.download='nashe-svidanie.png';
+    a.click();
+  }).catch(()=>alert('Не вышло сохранить — просто сделай скриншот 📸'));
+});
+
+document.getElementById('restart').addEventListener('click',()=>location.reload());
 
 /* ---------- confetti ---------- */
 function confetti(){
@@ -404,16 +573,12 @@ function confetti(){
   for(let i=0;i<40;i++){
     const p=document.createElement('span');
     p.textContent=em[Math.floor(Math.random()*em.length)];
-    p.style.position='absolute';
-    p.style.left='50%';
-    p.style.top='45%';
-    p.style.fontSize=(16+Math.random()*20)+'px';
-    p.style.pointerEvents='none';
+    p.style.position='absolute';p.style.left='50%';p.style.top='45%';
+    p.style.fontSize=(16+Math.random()*20)+'px';p.style.pointerEvents='none';
     box.appendChild(p);
     const ang=Math.random()*Math.PI*2;
     const dist=120+Math.random()*260;
-    const dx=Math.cos(ang)*dist;
-    const dy=Math.sin(ang)*dist - 120;
+    const dx=Math.cos(ang)*dist, dy=Math.sin(ang)*dist-120;
     p.animate([
       {transform:'translate(-50%,-50%) scale(.4)',opacity:1},
       {transform:`translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px)) rotate(${Math.random()*720-360}deg) scale(1.2)`,opacity:0}
