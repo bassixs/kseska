@@ -358,15 +358,15 @@ const vibes=[
 
 const activities=[
   {ic:'🎬',name:'Кино',note:'обнимашки в темноте'},
-  {ic:'🚶',name:'Прогулка',note:'гулять до утра'},
-  {ic:'⛸️',name:'Каток',note:'держаться за руки'},
-  {ic:'🖼️',name:'Выставка',note:'искусство и ты'},
+  {ic:'🚶',name:'Прогулка',note:'вдвоём не спеша'},
+  {ic:'🚲',name:'Ролики / велик',note:'ветер в лицо'},
+  {ic:'🍻',name:'По барам',note:'уютные места вдвоём'},
   {ic:'🎳',name:'Боулинг',note:'азарт и смех'},
   {ic:'💬',name:'Просто болтать',note:'обо всём на свете'},
 ];
 
 const dresses=[
-  {ic:'🧥',name:'Уютно',note:'свитер и плед-настроение'},
+  {ic:'🌸',name:'Лёгко и летне',note:'платье и сандалии'},
   {ic:'👗',name:'Нарядно',note:'при полном параде'},
   {ic:'🕶️',name:'Casual',note:'стильно и легко'},
   {ic:'😎',name:'Как есть',note:'ты и так огонь'},
@@ -507,7 +507,7 @@ function buildFlip(step){
     card.innerHTML=`
       <div class="flip-inner">
         <div class="flip-face flip-front"><span class="q">?</span><span class="hint">нажми</span></div>
-        <div class="flip-face flip-back"><span class="mic">🎤</span><span class="lz">Сергей<br>Лазарев</span><span class="song">«${song}»</span></div>
+        <div class="flip-face flip-back"><span class="mic">🎤</span><span class="lz">Сергей<br>Лазарев</span></div>
       </div>`;
     card.addEventListener('click',()=>{
       card.classList.toggle('flipped');
