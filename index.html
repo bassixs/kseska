@@ -31,7 +31,8 @@
     display:flex;
     align-items:center;
     justify-content:center;
-    overflow:hidden;
+    overflow-x:hidden;
+    overflow-y:auto;
     position:relative;
     padding:20px;
   }
@@ -141,8 +142,10 @@
     cursor:pointer;
     box-shadow:0 4px 12px rgba(230,62,115,.12), inset 0 0 0 1px rgba(255,180,205,.5);
     display:flex;flex-direction:column;align-items:center;gap:5px;
+    min-width:0;
     transition:transform .15s, box-shadow .15s, background .15s;
   }
+  .choice span{overflow-wrap:anywhere;max-width:100%;}
   .choice .ic{font-size:26px;}
   .choice:hover{transform:translateY(-4px);background:#fff;box-shadow:0 10px 22px rgba(230,62,115,.22);}
   .choice:active{transform:scale(.95);}
@@ -218,10 +221,10 @@
     background:repeating-linear-gradient(90deg,rgba(230,62,115,.4) 0 6px,transparent 6px 12px);
   }
   .pc-plan{text-align:left;display:flex;flex-direction:column;gap:9px;}
-  .pc-row{display:flex;align-items:center;gap:10px;font-size:14px;}
-  .pc-row .pi{font-size:19px;width:24px;text-align:center;flex:none;}
-  .pc-row .pl{opacity:.7;}
-  .pc-row b{color:var(--accent-dark);}
+  .pc-row{display:flex;align-items:baseline;gap:8px;font-size:14px;line-height:1.35;}
+  .pc-row .pi{font-size:18px;width:22px;text-align:center;flex:none;align-self:center;}
+  .pc-row .pl{opacity:.7;flex:none;}
+  .pc-row b{color:var(--accent-dark);overflow-wrap:anywhere;min-width:0;}
   .pc-foot{
     margin-top:16px;font-family:'Marck Script',cursive;
     font-size:22px;color:var(--accent-dark);
@@ -237,6 +240,23 @@
   .save-btn:hover{transform:translateY(-2px);}
 
   .burst{position:fixed;inset:0;pointer-events:none;z-index:5;}
+
+  /* ---- мобильные экраны ---- */
+  @media (max-width:480px){
+    body{padding:12px;}
+    .card{padding:26px 15px 32px;border-radius:26px;}
+    .grid{gap:9px;}
+    .choice{font-size:13px;padding:12px 7px;}
+    .choice .ic{font-size:23px;}
+    .choice .note{font-size:10px;}
+    .flipgrid{gap:8px;}
+    .flip{height:84px;}
+    .postcard{padding:22px 18px;}
+    .pc-title{font-size:34px;}
+    .pc-row{font-size:13px;}
+    .final-btns{gap:8px;}
+    .final-btns button{padding:13px 22px;font-size:15px;}
+  }
 </style>
 </head>
 <body>
@@ -533,16 +553,16 @@ backBtn.addEventListener('click',()=>{
 /* ---------- FINAL postcard ---------- */
 function finalize(){
   const rows=[
-    {pi:answers.cuisine.ic, label:'Кухня', val:answers.cuisine.name, note:answers.cuisine.note},
+    {pi:answers.cuisine.ic, label:'Кухня', val:answers.cuisine.name},
     {pi:answers.drink.ic, label:'Напиток', val:answers.drink.name},
     {pi:answers.vibe.ic, label:'Атмосфера', val:answers.vibe.name},
     {pi:answers.activity.ic, label:'Занятие', val:answers.activity.name},
     {pi:answers.dress.ic, label:'Образ', val:answers.dress.name},
-    {pi:'🎤', label:'Музыка', val:'Сергей Лазарев', note:'а кто же ещё 😏'},
+    {pi:'🎤', label:'Музыка', val:'Сергей Лазарев'},
     {pi:answers.time.ic, label:'Время', val:answers.time.name},
   ];
   document.getElementById('pcPlan').innerHTML=rows.map(r=>
-    `<div class="pc-row"><span class="pi">${r.pi}</span><span class="pl">${r.label}:</span> <b>${r.val}</b>${r.note?` <span class="pl">(${r.note})</span>`:''}</div>`
+    `<div class="pc-row"><span class="pi">${r.pi}</span><span class="pl">${r.label}:</span> <b>${r.val}</b></div>`
   ).join('');
 
   const d=new Date();
